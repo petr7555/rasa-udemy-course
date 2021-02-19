@@ -1,0 +1,135 @@
+version: '2.0'
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: true
+
+# list all intents in nlu.yml
+intents:
+  - greet
+  - ask_exercise
+  - goodbye
+  - affirm
+  - deny
+  - mood_great
+  - mood_unhappy
+  - bot_challenge
+  - ask_lower_stress
+  - ask_eat_healthy
+  - inform
+  - out_of_scope
+  - thankyou
+
+# https://rasa.com/docs/rasa/domain#slots
+slots:
+  # defines a slot with name "confirm_exercise" and type bool
+  confirm_exercise:
+    type: bool
+    # this slot will influence the next action prediction, true is default
+    influence_conversation: true
+  exercise:
+    type: text
+    # this slot will not influence the conversation
+    influence_conversation: false
+  sleep:
+    type: text
+    influence_conversation: false
+  diet:
+    type: text
+    influence_conversation: false
+  stress:
+    type: categorical
+    values:
+      - low
+      - medium
+      - high
+    influence_conversation: false
+  goal:
+    type: text
+    influence_conversation: false
+
+# list all entities
+entitites:
+  - exercise
+  - sleep
+  - stress
+
+forms:
+  # The name of the form is also the name of the action which you can use
+  # in stories or rules to handle form executions.
+  health_form:
+    # will fill the slot "confirm_exercise"
+    confirm_exercise:
+      # slot mapping
+      # https://rasa.com/docs/rasa/forms#slot-mappings
+      - type: from_intent
+        intent: affirm
+        value: true
+    # will fill the slot "exercise"
+    exercise:
+      - type: from_entity
+        # with value of entity "exercise"
+        entity: exercise
+    sleep:
+      - type: from_entity
+        entity: sleep
+    stress:
+      - type: from_entity
+        entity: stress
+    diet:
+      - type: from_text
+    goal:
+      - type: from_text
+
+responses:
+  utter_greet:
+    - text: "Hi! It's time for your daily wellness check. Tracking healthy habits is a great way to measure your progress over time. Would you like to answer a few questions about your health?"
+  utter_goodbye:
+    - text: Bye
+  utter_iamabot:
+    - text: I am a bot, powered by Rasa.
+
+  # Once the form action gets called for the first time, the form gets activated
+  # and will prompt the user for the next required slot value.
+  # It does this by looking for a response called utter_ask_<form_name>_<slot_name>
+  # or utter_ask_<slot_name> if the former isn't found.
+  # Make sure to define these responses in your domain file for each required slot.
+  # https://rasa.com/docs/rasa/forms#defining-a-form
+  utter_ask_confirm_exercise:
+    - text: Did you exercise yesterday? Don't sweat it if you didn't run a marathon - walks count!
+  utter_ask_exercise:
+    - text: What kind of exercise did you do 💪 ?
+  utter_ask_sleep:
+    - text: "How much sleep did you get 💤 last night?"
+  utter_ask_diet:
+    - text: "Did you stick to a healthy diet 🥦 yesterday?"
+  utter_ask_stress:
+    - text: "Is your stress level low, medium, or high 🧘 ?"
+  utter_ask_goal:
+    - text: "Setting goals - even small ones - is a great way to focus your day. What do you want to accomplish today 🥇 ?"
+
+  utter_slots_values:
+    - text: "Here's your daily wellness log:\n
+            - Exercised?: {confirm_exercise}\n
+            - Type of exercise: {exercise}\n
+            - Sleep: {sleep}\n
+            - Stuck to a healthy diet?: {diet}\n
+            - Stress level: {stress}\n
+            - Goal: {goal}"
+  utter_no_worries:
+    - text: "No problem :)"
+  utter_ask_continue:
+    - text: "Sorry, I don't quite understand. Do you want to continue?"
+  utter_stress_info:
+    - text:
+        It's ok to feel overwhelmed at times.
+        Try to set realistic expectations and exercise time management techniques,
+        like dividing large tasks into more manageable pieces. Relaxation techniques,
+        like deep breathing and meditation, can also be beneficial.
+  utter_diet_info:
+    - text: A healthy diet includes fruits and vegetables, whole grains, dairy, lean protein,
+        and plant-based fats. While there is room in a healthy diet for treats, added sugar
+        should be eaten sparingly. Aim for a variety of foods, and balance.
+  utter_exercise_info:
+    - text: Most healthy adults should aim to get about 150 min of moderate exercise per week.
+        This includes activities like a brisk walk or yard work.
+

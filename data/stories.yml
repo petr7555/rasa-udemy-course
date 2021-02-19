@@ -1,0 +1,109 @@
+version: "2.0"
+
+stories:
+  - story: say goodbye
+    steps:
+      - intent: goodbye
+      - action: utter_goodbye
+
+  - story: bot challenge
+    steps:
+      - intent: bot_challenge
+      - action: utter_iamabot
+
+  - story: survey happy path
+    steps:
+      - intent: greet
+      - action: utter_greet
+      - intent: affirm
+      # activate the form
+      # https://rasa.com/docs/rasa/forms#activating-a-form
+      - action: health_form
+      - active_loop: health_form
+      # describe your assistant's behavior for the end of a form with a rule or a story
+      # if you don't add an applicable story or rule, the assistant will automatically listen
+      # for the next user message after the form is finished
+      # run the utterance "utter_slots_values" as soon as the form "health_form" filled all required slots
+      # https://rasa.com/docs/rasa/forms#deactivating-a-form
+      - action: health_form
+      - active_loop: null
+      # The actions we want to run when the form is submitted.
+      - action: utter_slots_values
+      - intent: thankyou
+      - action: utter_no_worries
+      - action: utter_goodbye
+
+  # In some situations, users may change their mind in the middle of the form action
+  # and decide not to go forward with their initial request.
+  # In cases like this, the assistant should stop asking for the requested slots.
+  # https://rasa.com/docs/rasa/forms#writing-stories--rules-for-unhappy-form-paths
+  - story: survey stop
+    steps:
+      - intent: greet
+      - action: utter_greet
+      - intent: affirm
+      - action: health_form
+      - active_loop: health_form
+      - intent: out_of_scope
+      - action: utter_ask_continue
+      - intent: deny
+      # You can handle such situations gracefully using a default action action_deactivate_loop
+      # which will deactivate the form and reset the requested slot
+      - action: action_deactivate_loop
+      - active_loop: null
+      - action: utter_goodbye
+
+  - story: survey continue
+    steps:
+      - intent: greet
+      - action: utter_greet
+      - intent: affirm
+      - action: health_form
+      - active_loop: health_form
+      # if you expect your users to chitchat with your bot, you could add a rule to handle this
+      - intent: out_of_scope
+      - action: utter_ask_continue
+      - intent: affirm
+      # Return to form after handling the "out_of_scope" intent
+      - action: health_form
+      - active_loop: health_form
+      # The actions we want to run when the form is submitted.
+      - action: health_form
+      - active_loop: null
+      - action: utter_slots_values
+
+  - story: no survey
+    steps:
+      - intent: greet
+      - action: utter_greet
+      - intent: deny
+      - action: utter_goodbye
+
+#  - story: ask health questions form
+#    steps:
+#      - intent: greet
+#      - action: utter_greet
+#      - intent: affirm
+#      - action: health_form
+#      - active_loop: health_form
+#      - intent: ask_exercise
+#      - action: utter_exercise_info
+#      - action: health_form
+#      - active_loop: health_form
+#      - action: utter_goodbye
+
+  - story: ask lower stress
+    steps:
+      - intent: ask_lower_stress
+      - action: utter_stress_info
+
+  - story: ask eat healthy
+    steps:
+      - intent: ask_eat_healthy
+      - action: utter_diet_info
+
+  - story: ask exercise
+    steps:
+      - intent: ask_exercise
+      - action: utter_exercise_info
+
