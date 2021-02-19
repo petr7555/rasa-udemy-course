@@ -25,7 +25,7 @@ stories:
       # for the next user message after the form is finished
       # run the utterance "utter_slots_values" as soon as the form "health_form" filled all required slots
       # https://rasa.com/docs/rasa/forms#deactivating-a-form
-      - action: health_form
+#      - action: health_form
       - active_loop: null
       # The actions we want to run when the form is submitted.
       - action: utter_slots_values
@@ -68,7 +68,7 @@ stories:
       - action: health_form
       - active_loop: health_form
       # The actions we want to run when the form is submitted.
-      - action: health_form
+#      - action: health_form
       - active_loop: null
       - action: utter_slots_values
 
