@@ -25,7 +25,6 @@ stories:
       # for the next user message after the form is finished
       # run the utterance "utter_slots_values" as soon as the form "health_form" filled all required slots
       # https://rasa.com/docs/rasa/forms#deactivating-a-form
-#      - action: health_form
       - active_loop: null
       # The actions we want to run when the form is submitted.
       - action: utter_slots_values
@@ -50,8 +49,6 @@ stories:
       # You can handle such situations gracefully using a default action action_deactivate_loop
       # which will deactivate the form and reset the requested slot
       - action: action_deactivate_loop
-      - active_loop: null
-      - action: utter_goodbye
 
   - story: survey continue
     steps:
@@ -66,11 +63,6 @@ stories:
       - intent: affirm
       # Return to form after handling the "out_of_scope" intent
       - action: health_form
-      - active_loop: health_form
-      # The actions we want to run when the form is submitted.
-#      - action: health_form
-      - active_loop: null
-      - action: utter_slots_values
 
   - story: no survey
     steps:
@@ -79,18 +71,18 @@ stories:
       - intent: deny
       - action: utter_goodbye
 
-#  - story: ask health questions form
-#    steps:
-#      - intent: greet
-#      - action: utter_greet
-#      - intent: affirm
-#      - action: health_form
-#      - active_loop: health_form
-#      - intent: ask_exercise
-#      - action: utter_exercise_info
-#      - action: health_form
-#      - active_loop: health_form
-#      - action: utter_goodbye
+  - story: ask health questions form
+    steps:
+      - intent: greet
+      - action: utter_greet
+      - intent: affirm
+      - action: health_form
+      - active_loop: health_form
+      - intent: ask_exercise
+      - action: utter_exercise_info
+      - action: health_form
+      - active_loop: null
+      - action: utter_slots_values
 
   - story: ask lower stress
     steps:

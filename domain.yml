@@ -1,7 +1,7 @@
 version: '2.0'
 session_config:
   session_expiration_time: 60
-  carry_over_slots_to_new_session: true
+  carry_over_slots_to_new_session: false
 
 # list all intents in nlu.yml
 intents:
@@ -20,18 +20,19 @@ intents:
   - thankyou
 
 # https://rasa.com/docs/rasa/domain#slots
+# Entities are automatically saved to slots that have the same name.
 slots:
   # defines a slot with name "confirm_exercise" and type bool
   confirm_exercise:
     type: bool
-    # this slot will influence the next action prediction, true is default
-    influence_conversation: true
+    # this slot won't influence the next action prediction, true is default
+    influence_conversation: false
   exercise:
     type: text
-    # this slot will not influence the conversation
+    # this slot will not influence the conversation either
     influence_conversation: false
   sleep:
-    type: text
+    type: any
     influence_conversation: false
   diet:
     type: text
@@ -61,8 +62,15 @@ forms:
     confirm_exercise:
       # slot mapping
       # https://rasa.com/docs/rasa/forms#slot-mappings
+      # they are run in the order they are defined
       - type: from_intent
         intent: affirm
+        value: true
+      - type: from_intent
+        intent: deny
+        value: false
+      - type: from_intent
+        intent: inform
         value: true
     # will fill the slot "exercise"
     exercise:
@@ -72,13 +80,21 @@ forms:
     sleep:
       - type: from_entity
         entity: sleep
+      - type: from_intent
+        intent: deny
+        value: None
     stress:
       - type: from_entity
         entity: stress
     diet:
       - type: from_text
+        intent:
+          - inform
+          - affirm
+          - deny
     goal:
       - type: from_text
+        intent: inform
 
 responses:
   utter_greet:
@@ -133,3 +149,5 @@ responses:
     - text: Most healthy adults should aim to get about 150 min of moderate exercise per week.
         This includes activities like a brisk walk or yard work.
 
+actions:
+  - validate_health_form

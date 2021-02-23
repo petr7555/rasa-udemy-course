@@ -1,13 +1,18 @@
 version: "2.0"
 
 rules:
-
-  - rule: Say goodbye anytime the user says goodbye
+  - rule: Activate form
     steps:
-      - intent: goodbye
-      - action: utter_goodbye
+      - intent: health_form
+      - action: health_form
+      - active_loop: health_form
 
-  - rule: Say 'I am a bot' anytime the user challenges
+  - rule: Submit form
+    condition:
+      # Condition that form is active.
+      - active_loop: health_form
     steps:
-      - intent: bot_challenge
-      - action: utter_iamabot
+      - action: health_form
+      - active_loop: null
+      # The action we want to run when the form is submitted.
+      - action: utter_slots_values
