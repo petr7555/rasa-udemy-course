@@ -1,3 +1,5 @@
+This project is based on [Udemy Rasa tutorial](https://www.udemy.com/course/rasa-for-beginners).
+
 In the project root, create `.env` file:
 
 ```
