@@ -16,3 +16,4 @@ rules:
       - active_loop: null
       # The action we want to run when the form is submitted.
       - action: utter_slots_values
+      - action: submit_health_form

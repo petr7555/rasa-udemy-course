@@ -28,6 +28,7 @@ stories:
       - active_loop: null
       # The actions we want to run when the form is submitted.
       - action: utter_slots_values
+      - action: submit_health_form
       - intent: thankyou
       - action: utter_no_worries
       - action: utter_goodbye
@@ -83,6 +84,7 @@ stories:
       - action: health_form
       - active_loop: null
       - action: utter_slots_values
+      - action: submit_health_form
 
   - story: ask lower stress
     steps:

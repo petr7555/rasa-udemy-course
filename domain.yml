@@ -151,3 +151,4 @@ responses:
 
 actions:
   - validate_health_form
+  - submit_health_form

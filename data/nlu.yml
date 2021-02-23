@@ -83,6 +83,7 @@ nlu:
       - [medium](stress)
       - [high](stress)
       - Yes, I went for a [run](exercise)
+      - [running](exercise)
       - uh huh an hour of [yoga](exercise)
       - yep, I went for a [hike](exercise)
       - Yes I took the dog for a [walk](exercise)
