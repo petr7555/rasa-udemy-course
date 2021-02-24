@@ -77,7 +77,7 @@ def create_health_log(confirm_exercise, exercise, sleep, diet, stress, goal):
     except requests.exceptions.HTTPError as err:
         raise SystemExit(err)
 
-    print(response.status_code)
+    print(f"Response status code: {response.status_code}")
     return response
 
 
