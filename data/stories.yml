@@ -101,3 +101,8 @@ stories:
       - intent: ask_exercise
       - action: utter_exercise_info
 
+  - story: tell sleep
+    steps:
+      - intent: inform
+      - action: utter_sleep_back
+
