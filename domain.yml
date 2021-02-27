@@ -23,7 +23,7 @@ intents:
 # Entities are automatically saved to slots that have the same name.
 # If the entity is then contained in form, it is not asked anymore as part of the form,
 # because it has already been filled.
-# Slot can be overwritten.
+# Slots can be overwritten.
 slots:
   # defines a slot with name "confirm_exercise" and type bool
   confirm_exercise:
