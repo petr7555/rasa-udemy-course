@@ -81,7 +81,7 @@ def create_health_log(confirm_exercise, exercise, sleep, diet, stress, goal):
     return response
 
 
-class ValidateRestaurantForm(FormValidationAction):
+class ValidateHealthForm(FormValidationAction):
     def name(self) -> Text:
         return "validate_health_form"
 
